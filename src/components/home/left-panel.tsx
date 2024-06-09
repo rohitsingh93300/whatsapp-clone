@@ -1,33 +1,29 @@
-'use client'
-import { ListFilter, LogOut, MessageSquareDiff, Search, User } from "lucide-react";
+"use client";
+import { ListFilter, Search } from "lucide-react";
 import { Input } from "../ui/input";
 import ThemeSwitch from "./theme-switch";
-import { conversations } from "@/dummy-data/db";
 import Conversation from "./conversation";
 import { UserButton } from "@clerk/nextjs";
-import { SignInButton, SignOutButton, SignedIn, SignedOut } from "@clerk/clerk-react";
+
+import UserListDialog from "./user-list-dialog";
+import { useConvexAuth, useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 
 const LeftPanel = () => {
-	// const conversations = [];
+	const { isAuthenticated } = useConvexAuth();
+	const conversations = useQuery(api.conversations.getMyConversations, isAuthenticated ? undefined : "skip");
 
+	console.log(conversations);
 	return (
-		<div className='w-1/4 border-gray-400 border-r'>
+		<div className='w-1/4 border-gray-600 border-r'>
 			<div className='sticky top-0 bg-left-panel z-10'>
 				{/* Header */}
 				<div className='flex justify-between bg-gray-primary p-3 items-center'>
 					<UserButton />
-					{/* <SignedIn>
-						<SignOutButton/>
-					</SignedIn>
-
-					<SignedOut>
-						<SignInButton/>
-					</SignedOut> */}
 
 					<div className='flex items-center gap-3'>
-						<MessageSquareDiff size={20} /> {/* TODO: This line will be replaced with <UserListDialog /> */}
+						{isAuthenticated && <UserListDialog />}
 						<ThemeSwitch />
-						<LogOut size={20} className='cursor-pointer' />
 					</div>
 				</div>
 				<div className='p-3 flex items-center'>
@@ -50,9 +46,9 @@ const LeftPanel = () => {
 			{/* Chat List */}
 			<div className='my-3 flex flex-col gap-0 max-h-[80%] overflow-auto'>
 				{/* Conversations will go here*/}
-                {conversations.map((conversation)=> (
-                    <Conversation key={conversation._id} conversation={conversation}/>
-                ))}
+				{conversations?.map((conversation) => (
+					<Conversation key={conversation._id} conversation={conversation} />
+				))}
 
 				{conversations?.length === 0 && (
 					<>
