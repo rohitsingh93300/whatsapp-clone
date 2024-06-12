@@ -15,7 +15,7 @@ const LeftPanel = () => {
 
 	console.log(conversations);
 	return (
-		<div className='w-1/4 border-gray-600 border-r'>
+		<div className='w-1.5/4 border-gray-600 border-r'>
 			<div className='sticky top-0 bg-left-panel z-10'>
 				{/* Header */}
 				<div className='flex justify-between bg-gray-primary p-3 items-center'>
