@@ -85,6 +85,7 @@ export const getRelativeDateTime = (message: any, previousMessage: any) => {
 	}
 };
 
+
 export function randomID(len: number) {
 	let result = "";
 	if (result) return result;
